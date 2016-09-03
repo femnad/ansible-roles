@@ -13,7 +13,7 @@
   when: edit_config
   tags: build, config-edit
 - name: Change line in config
-  replace: dest={{ release_path }}/{{ config_file }} regexp={{ item.before }}
+  replace: dest={{ source }}/{{ config_file }} regexp={{ item.before }}
            replace={{ item.after }}
   when: edit_config
   with_items:
