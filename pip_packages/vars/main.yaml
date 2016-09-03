@@ -1,0 +1,6 @@
+---
+_pip_package_deps:
+  - libffi-dev
+  - libssl-dev
+  - python-dev
+  - python-virtualenv
