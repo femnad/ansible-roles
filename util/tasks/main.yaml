@@ -22,5 +22,5 @@
 - name: Link {{_name}} executable
   file: src="{{ source.path }}/{{ _name }}"
         dest="{{ _util.link_directory }}/{{ _name }}" state=link
-  when: link
+  when: _util.link
   tags: link-file
