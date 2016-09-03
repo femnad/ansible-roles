@@ -1,15 +1,15 @@
 - name: Comment out lines in config file for {{_name}}
-  replace: dest="{{ source.path }}/{{ config_file }}" regexp="^({{ item }}.*)"
+  replace: dest="{{ source.path }}/{{ _util.config_file }}" regexp="^({{ item }}.*)"
            replace='#\1'
   with_items:
-    "{{ comment_out_lines }}"
+    "{{ _util.comment_out_lines }}"
   when: edit_config
   tags: build, config-edit
 - name: Comment in lines in config file for {{_name}}
-  lineinfile: dest="{{ source.path }}/{{ config_file }}" regexp="^#({{ item }}.*)"
+  lineinfile: dest="{{ source.path }}/{{ _util.config_file }}" regexp="^#({{ item }}.*)"
               state=present line='\1' backrefs=yes
   with_items:
-    "{{ comment_in_lines }}"
+    "{{ _util.comment_in_lines }}"
   when: edit_config
   tags: build, config-edit
 - name: Change line in config
@@ -17,10 +17,10 @@
            replace={{ item.after }}
   when: edit_config
   with_items:
-    "{{ lines_to_change }}"
+    "{{ _util.lines_to_change }}"
   tags: build, config-edit
 - name: Link {{_name}} executable
   file: src="{{ source.path }}/{{ _name }}"
-        dest="{{ link_directory }}/{{ _name }}" state=link
+        dest="{{ _util.link_directory }}/{{ _name }}" state=link
   when: link
   tags: link-file
