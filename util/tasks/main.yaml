@@ -19,7 +19,7 @@
   with_items:
     "{{ _util.lines_to_change }}"
   tags: build, config-edit
-- name: Link {{_name}} executable
+- name: Link {{ _util.link_file }} executable
   file: src="{{ source.path }}/{{ _name }}"
         dest="{{ _util.link_directory }}/{{ _name }}" state=link
   when: _util.link
