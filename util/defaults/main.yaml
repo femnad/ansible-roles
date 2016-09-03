@@ -4,3 +4,5 @@ _default_util:
   comment_out_lines: []
   lines_to_change: {}
   link: false
+
+util: {}
