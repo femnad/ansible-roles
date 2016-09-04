@@ -2,6 +2,7 @@
 _default_util:
   comment_in_lines: []
   comment_out_lines: []
+  edit_config: false
   lines_to_change: {}
   link: false
 
