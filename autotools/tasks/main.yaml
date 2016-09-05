@@ -19,7 +19,7 @@
     ansible_distribution == "FreeBSD"
   tags: build, make, install
 - name: Clean artifacts {{ source.name }}
-  command: "{{ _make_executable }} clean"
+  command: "{{ _build.make_executable }} clean"
   args:
     chdir: "{{ source.path}}"
   when: _build.make and _build.clean
@@ -30,13 +30,13 @@
     "{{ _build.generated_artifacts }}"
   tags: build, clean
 - name: Build {{ source.name }}
-  command: "{{ _make_executable }} {{ _build.make_command }}"
+  command: "{{ _build.make_executable }} {{ _build.make_command }}"
   args:
     chdir: "{{ source.path }}"
   when: _build.make
   tags: build, make
 - name: Install {{ source.name }}
-  command: "{{ _make_executable }} install"
+  command: "{{ _build.make_executable }} install"
   args:
     chdir: "{{ source.path }}"
   when: _build.make or _build.make_install
