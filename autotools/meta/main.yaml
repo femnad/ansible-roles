@@ -2,4 +2,4 @@
 dependencies:
   - { role: packages, deps: "{{ _build_deps }}",
       when: _build.make or _build.configure }
-  - { role: util, when: util.edit_config }
+  - { role: util, when: _build.edit_config }
