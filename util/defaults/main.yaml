@@ -4,8 +4,7 @@ _default_util:
   comment_out_lines: []
   edit_config: false
   lines_to_change: {}
-  link_directory: "{{ user_bin }}"
+  link_destination: "{{ user_bin }}"
   link_file: false
-  link_file_dest: "{{ link_file }}"
 
 util: {}
