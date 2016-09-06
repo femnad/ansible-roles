@@ -22,7 +22,7 @@
 - name: Link {{ _util.link_file }} executable
   file:
     src: "{{ source.path }}/{{ _util.link_file }}"
-    dest: "{{ _util.link_destination }} // {{ _util.link_file | basename }}"
+    dest: "{{ _util.link_destination }}/{{ _util.link_file | basename }}"
     state: link
   when: _util.link_file
   tags: link-file
