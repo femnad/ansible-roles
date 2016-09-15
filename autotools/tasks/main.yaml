@@ -6,7 +6,7 @@
   when: _build.reconf and _build.configure
   tags: build, autoconf
 - name: Configure {{ source.name }}
-  command: ./configure {{ _build.configuration }}
+  command: "{{ _build.configure_command }} {{ _build.configuration }}"
   args:
     chdir: "{{ source.path }}"
   when: _build.configure

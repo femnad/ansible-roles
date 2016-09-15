@@ -3,6 +3,7 @@ _build_defaults:
   clean: false
   configuration:
   configure: true
+  configure_command: "./configure"
   edit_config: false
   generated_artifacts: []
   make: true
