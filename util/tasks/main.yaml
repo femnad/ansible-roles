@@ -12,17 +12,19 @@
     "{{ _util.comment_in_lines }}"
   when: _util.edit_config
   tags: build, config-edit
-- name: Change line in config
-  replace: dest={{ source.path }}/{{ config_file }} regexp={{ item.before }}
+- name: Change line in file
+  replace: dest={{ source.path }}/{{ item.file }} regexp={{ item.before }}
            replace={{ item.after }}
-  when: _util.edit_config
+  when: _util.replace
   with_items:
-    "{{ _util.lines_to_change }}"
+    "{{ _util.replace }}"
   tags: build, config-edit
-- name: Link {{ _util.link_file }} executable
+- name: Link file
   file:
-    src: "{{ source.path }}/{{ _util.link_file }}"
-    dest: "{{ _util.link_destination }}/{{ _util.link_file | basename }}"
+    src: "{{ source.path }}/{{ item }}"
+    dest: "{{ _util.link_destination }}/{{ item | basename }}"
     state: link
-  when: _util.link_file
+  when: _util.link
+  with_items:
+    "{{ _util.link }}"
   tags: link-file
