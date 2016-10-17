@@ -1,6 +1,7 @@
 ---
 _build_defaults:
   clean: false
+  cmake: false
   configuration:
   configure: true
   configure_command: "./configure"
@@ -8,6 +9,7 @@ _build_defaults:
   generated_artifacts: []
   make: true
   make_command:
+  makefile_path:
   make_executable: make
   make_install: true
   reconf: true

@@ -3,13 +3,38 @@
   command: autoreconf -i
   args:
     chdir: "{{ source.path }}"
-  when: _build.reconf and _build.configure
+  when: _build.reconf and _build.configure and not _build.cmake
   tags: build, autoconf
+
+- name: Set makefile path for cmake
+  set_fact:
+    _build:
+      "{{ _build | combine({'makefile_path': 'build'}) }}"
+  when: _build.cmake
+
+- name: Generate build directory for cmake
+  file:
+    path:
+      "{{ source.path }}/{{ _build.makefile_path }}"
+    state:
+      directory
+  when: _build.cmake
+  tags: build
+
+- name: Generate Makefile with cmake
+  command:
+    cmake ..
+  args:
+    chdir:
+      "{{ source.path }}/{{ _build.makefile_path }}"
+  when: _build.cmake
+  tags: build
+
 - name: Configure {{ source.name }}
   command: "{{ _build.configure_command }} {{ _build.configuration }}"
   args:
     chdir: "{{ source.path }}"
-  when: _build.configure
+  when: _build.configure and not _build.cmake
   tags: build, configure
 - name: Set make executable {{ source.name }}
   set_fact:
@@ -29,16 +54,25 @@
   with_items:
     "{{ _build.generated_artifacts }}"
   tags: build, clean
+
 - name: Build {{ source.name }}
   command: "{{ _build.make_executable }} {{ _build.make_command }}"
   args:
     chdir: "{{ source.path }}"
-  when: _build.make
+  when: _build.make and not _build.cmake
   tags: build, make
+
+- name: Build {{ source.name }}
+  command: "{{ _build.make_executable }} {{ _build.make_command }}"
+  args:
+    chdir: "{{ source.path }}/{{ _build.makefile_path }}"
+  when: _build.cmake
+  tags: build, make
+
 - name: Install {{ source.name }}
   command: "{{ _build.make_executable }} install"
   args:
-    chdir: "{{ source.path }}"
+    chdir: "{{ source.path }}/{{ _build.makefile_path }}"
   when: _build.make or _build.make_install
   become: yes
   tags: install
