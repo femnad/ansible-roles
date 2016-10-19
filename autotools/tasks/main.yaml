@@ -36,13 +36,15 @@
     chdir: "{{ source.path }}"
   when: _build.configure and not _build.cmake
   tags: build, configure
-- name: Set make executable {{ source.name }}
+
+- name: Set make executable
   set_fact:
-    _make_executable:
-      gmake
+    _build:
+      "{{ _build | combine({'make_executable': 'gmake'}) }}"
   when:
     ansible_distribution == "FreeBSD"
   tags: build, make, install
+
 - name: Clean artifacts {{ source.name }}
   command: "{{ _build.make_executable }} clean"
   args:
