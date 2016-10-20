@@ -3,15 +3,17 @@
            replace='#\1'
   with_items:
     "{{ _util.comment_out_lines }}"
-  when: _util.edit_config
+  when: _util.edit_config or _build.edit_config
   tags: build, config-edit
+
 - name: Comment in lines in config file for {{ _util.config_file }}
   lineinfile: dest="{{ source.path }}/{{ _util.config_file }}" regexp="^#({{ item }}.*)"
               state=present line='\1' backrefs=yes
   with_items:
     "{{ _util.comment_in_lines }}"
-  when: _util.edit_config
+  when: _util.edit_config or _build.edit_config
   tags: build, config-edit
+
 - name: Change line in file
   replace: dest={{ source.path }}/{{ item.file }} regexp={{ item.before }}
            replace={{ item.after }}
@@ -19,6 +21,7 @@
   with_items:
     "{{ _util.replace }}"
   tags: build, config-edit
+
 - name: Link file
   file:
     src: "{{ source.path }}/{{ item }}"
