@@ -1,7 +1,7 @@
 ---
 - name: Clone {{ _repo.name }} with git
   git: repo={{ _repo.url }} dest={{ clone_path }} accept_hostkey={{ accept_hostkey }}
-       force={{ force_discard }} version={{version | default(omit)}}
+       force={{ force_discard }} version={{_repo.version | default(omit)}}
   when: _repo.type == "git"
   tags: clone
 - name: Clone {{ _repo.name }} with Mercurial
