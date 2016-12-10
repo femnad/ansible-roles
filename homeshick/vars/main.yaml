@@ -18,8 +18,6 @@ homesick_repos_path:
 _default:
   clone_type:
     https
-  init:
-    false
   repos:
     []
 
