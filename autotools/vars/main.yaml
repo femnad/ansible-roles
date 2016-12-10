@@ -1,7 +1,7 @@
 ---
 _build_deps:
   apt:
-    [autoconf, automake, libtool, make, pkg-config]
+    [autoconf, automake, cmake, libtool, make, pkg-config]
   dnf_yum:
     [autoconf, automake, libtool, make, pkgconfig]
   pkg:
