@@ -1,6 +1,14 @@
 ---
 - name: Install packages with apt
-  apt: name={{ item }} state=latest update_cache={{ update_cache }}
+  apt:
+    name:
+      "{{ item }}"
+    state:
+      latest
+    update_cache:
+      "{{ _update_cache  | default(omit) }}"
+    default_release:
+      "{{ _default_release | default(omit) }}"
   with_items:
     "{{ _deps.apt }}"
   when: ansible_os_family == "Debian"

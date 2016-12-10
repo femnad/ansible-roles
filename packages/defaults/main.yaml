@@ -10,5 +10,3 @@ _default_deps:
     []
 
 deps: {}
-
-update_cache: false
