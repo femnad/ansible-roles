@@ -1,0 +1,42 @@
+---
+- name: Set bash executable
+  set_fact:
+    bash_executable: /usr/local/bin/bash
+  when: ansible_distribution == "FreeBSD"
+  tags: link
+
+- name: Mount fdescfs
+  mount:
+    name: /dev/fd
+    src: fdesc
+    fstype: fdescfs
+    state: present
+  become: yes
+  when: ansible_distribution == "FreeBSD"
+  tags: link
+
+- name: Set Gitlab repo prefix
+  set_fact:
+    gitlab_repo_prefix:
+      "{{ gitlab_base_url_ssh }}:{{ gitlab_username }}"
+  when:
+    _homeshick.clone_type == "ssh"
+  tags: clone
+
+- name: Clone homesick repos
+  git: repo={{ gitlab_repo_prefix }}/{{ item }}.git
+      dest={{ homesick_repos_path }}/{{ item }}
+      accept_hostkey=true
+  with_items:
+    "{{ _homeshick.repos }}"
+  tags: clone
+
+- name: Link homesick repos
+  shell: |
+    source $HOME/.homesick/repos/homeshick/homeshick.sh
+    homeshick link -f {{ item }}
+  args:
+    executable: "{{ bash_executable }}"
+  with_items:
+    "{{ _homeshick.repos }}"
+  tags: link
