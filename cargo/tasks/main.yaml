@@ -1,0 +1,10 @@
+---
+- name:
+    Build {{ source.name }}
+  command:
+    cargo build --release
+  args:
+    chdir:
+      "{{ source.path }}"
+  tags: cargo, build
+
