@@ -1,0 +1,20 @@
+---
+- name: Create file
+  blockinfile:
+    dest:
+      "{{ _createfile.path }}"
+    block:
+      "{{ _createfile.content }}"
+    create:
+      yes
+    marker:
+      ""
+  tags: createfile
+
+- name: Remove empty lines from the script
+  replace:
+    dest:
+      "{{ _createfile.path }}"
+    regexp:
+      ^$\n
+  tags: createfile

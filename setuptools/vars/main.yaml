@@ -4,6 +4,8 @@ _setuptools_default:
     python3
   package_virtualenv:
     "{{virtualenv_base }}/{{ source.name }}"
+  command:
+    install
 
 _setuptools:
   "{{ _setuptools_default | combine(setuptools) }}"

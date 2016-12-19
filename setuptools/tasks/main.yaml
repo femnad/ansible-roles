@@ -9,7 +9,7 @@
 
 - name: Install {{ source.name }} in virtualenv
   command:
-    python setup.py install
+    python setup.py {{ _setuptools.command }}
   args:
     chdir:
       "{{ source.path }}"
