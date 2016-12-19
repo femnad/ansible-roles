@@ -1,7 +1,13 @@
 ---
-_default_repo:
-  type: git
+accept_hostkey:
+  true
+clone_path:
+  "{{ repo_clone_path }}/{{ _repo_name }}"
+force_discard:
+  true
 
-accept_hostkey: true
-clone_path: "{{ repo_clone_path }}/{{ _repo.name }}"
-force_discard: true
+_default_repo:
+  type:
+    git
+_repo_name:
+  "{{ _repo.url | basename | splitext | first }}"

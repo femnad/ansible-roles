@@ -1,6 +1,3 @@
 ---
 setuptools:
-  python_exe:
-    python3
-  package_virtualenv:
-    "{{virtualenv_base }}/{{ source.name }}"
+  {}

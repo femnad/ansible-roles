@@ -1,0 +1,9 @@
+---
+_setuptools_default:
+  python_exe:
+    python3
+  package_virtualenv:
+    "{{virtualenv_base }}/{{ source.name }}"
+
+_setuptools:
+  "{{ _setuptools_default | combine(setuptools) }}"

@@ -1,18 +1,21 @@
 ---
 - name: Create virtualenv
-  command: virtualenv {{ setuptools.package_virtualenv }} -p {{ setuptools.python_exe }}
+  command:
+    virtualenv {{ _setuptools.package_virtualenv }} -p {{ _setuptools.python_exe }}
   args:
     creates:
-      "{{ setuptools.package_virtualenv }}"
+      "{{ _setuptools.package_virtualenv }}"
   tags: setuptools, setuptools-virtualenv
 
 - name: Install {{ source.name }} in virtualenv
-  shell: |
-    source {{ setuptools.package_virtualenv }}/bin/activate
+  command:
     python setup.py install
   args:
     chdir:
       "{{ source.path }}"
-    executable:
-      /bin/bash
-  tags: setuptools, setuptools-install
+  environment:
+    VIRTUAL_ENV:
+      "{{ _setuptools.package_virtualenv }}"
+    PATH:
+      "{{ _setuptools.package_virtualenv }}/bin:{{ ansible_env.PATH }}"
+  tags: setuptools, setuptools-install, path
