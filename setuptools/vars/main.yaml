@@ -9,3 +9,9 @@ _setuptools_default:
 
 _setuptools:
   "{{ _setuptools_default | combine(setuptools) }}"
+
+_virtual_environment:
+  VIRTUAL_ENV:
+    "{{ _setuptools.package_virtualenv }}"
+  PATH:
+    "{{ _setuptools.package_virtualenv }}/bin:{{ ansible_env.PATH }}"

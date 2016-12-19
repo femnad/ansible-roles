@@ -7,6 +7,16 @@
       "{{ _setuptools.package_virtualenv }}"
   tags: setuptools, setuptools-virtualenv
 
+- name: Update pip and setuptools
+  command: |
+    pip install --upgrade {{ item }}
+  with_items:
+    - pip
+    - setuptools
+  environment:
+    "{{ _virtual_environment }}"
+  tags: setuptools, setuptools-upgrade
+
 - name: Install {{ source.name }} in virtualenv
   command:
     python setup.py {{ _setuptools.command }}
@@ -14,8 +24,5 @@
     chdir:
       "{{ source.path }}"
   environment:
-    VIRTUAL_ENV:
-      "{{ _setuptools.package_virtualenv }}"
-    PATH:
-      "{{ _setuptools.package_virtualenv }}/bin:{{ ansible_env.PATH }}"
+    "{{ _virtual_environment }}"
   tags: setuptools, setuptools-install, path
