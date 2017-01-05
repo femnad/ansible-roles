@@ -1,2 +1,4 @@
 dependencies:
   - clone
+  - { role: virtualenv,
+      virtualenv_name: "{{ source.name }}" }

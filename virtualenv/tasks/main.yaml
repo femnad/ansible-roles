@@ -1,0 +1,17 @@
+- name: Create virtualenv
+  command:
+    virtualenv {{ _virtualenv.virtualenv_path }} -p {{ _virtualenv.python_exe }}
+  args:
+    creates:
+      "{{ _virtualenv.virtualenv_path }}"
+  tags: setuptools, setuptools-virtualenv
+
+- name: Update pip and setuptools
+  command: |
+    pip install --upgrade {{ item }}
+  with_items:
+    - pip
+    - setuptools
+  environment:
+    "{{ _virtual_environment }}"
+  tags: setuptools, setuptools-upgrade

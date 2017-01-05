@@ -1,17 +1,15 @@
 ---
+__virtualenv_path:
+  "{{ virtualenv_base }}/{{ source.name }}"
+
 _setuptools_default:
-  python_exe:
-    python3
-  package_virtualenv:
-    "{{virtualenv_base }}/{{ source.name }}"
   command:
     install
+  environment:
+    VIRTUAL_ENV:
+      "{{ __virtualenv_path }}"
+    PATH:
+      "{{ __virtualenv_path }}/bin:{{ ansible_env.PATH }}"
 
 _setuptools:
   "{{ _setuptools_default | combine(setuptools) }}"
-
-_virtual_environment:
-  VIRTUAL_ENV:
-    "{{ _setuptools.package_virtualenv }}"
-  PATH:
-    "{{ _setuptools.package_virtualenv }}/bin:{{ ansible_env.PATH }}"

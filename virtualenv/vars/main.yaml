@@ -1,0 +1,15 @@
+---
+_virtualenv_default:
+  python_exe:
+    python3
+  virtualenv_path:
+    "{{ virtualenv_base }}/{{ virtualenv_name }}"
+
+_virtualenv:
+  "{{ _virtualenv_default | combine(virtualenv) }}"
+
+_virtual_environment:
+  VIRTUAL_ENV:
+    "{{ _virtualenv.virtualenv_path }}"
+  PATH:
+    "{{ _virtualenv.virtualenv_path }}/bin:{{ ansible_env.PATH }}"
