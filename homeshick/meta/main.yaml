@@ -1,5 +1,5 @@
 dependencies:
   - packages
   - { role: clone, repo: "{{ _homeshick_repo }}",
-      clone_path: "{{ _homeshick_clone_path }}",
+      clone_path: "{{ _homeshick_clone_path }}/homeshick",
       when: homeshick_init }
