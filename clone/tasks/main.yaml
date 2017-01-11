@@ -6,11 +6,11 @@
     dest:
       "{{ clone_path }}"
     accept_hostkey:
-      "{{ accept_hostkey }}"
+      "{{ _repo.accept_hostkey }}"
     force:
-      "{{ force_discard }}"
+      "{{ _repo.force_discard }}"
     version:
-      "{{_repo.version | default(omit)}}"
+      "{{ _repo.version | default(omit)}}"
   when: _repo.type == "git"
   tags: clone
 
@@ -30,7 +30,7 @@
     dest:
       "{{ clone_path }}"
     force:
-      "{{ force_discard }}"
+      "{{ _repo.force_discard }}"
   when: _repo.type == "bzr"
   tags: clone
 
@@ -40,5 +40,5 @@
       path:
         "{{ clone_path }}"
       name:
-        "{{ _repo_name }}"
+        "{{ _repo.name }}"
   tags: clone, build, install, make, path

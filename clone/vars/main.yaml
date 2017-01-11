@@ -29,3 +29,6 @@ _clone_deps:
       dev-vcs/mercurial
 
 _repo: "{{ _default_repo | combine(repo) }}"
+
+clone_path:
+  "{{ repo_clone_path }}/{{ _repo.name }}"
