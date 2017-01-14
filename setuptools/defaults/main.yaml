@@ -1,3 +1,4 @@
 ---
 setuptools:
-  {}
+  virtualenv_name:
+    "{{ source.name }}"

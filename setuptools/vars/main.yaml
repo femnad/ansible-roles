@@ -1,6 +1,6 @@
 ---
 __virtualenv_path:
-  "{{ virtualenv_base }}/{{ source.name }}"
+  "{{ virtualenv_base }}/{{ setuptools.virtualenv_name }}"
 
 _setuptools_default:
   command:
