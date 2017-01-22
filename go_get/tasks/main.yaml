@@ -20,6 +20,6 @@
     dest:
       "{{ user_home }}/.profile"
     line:
-      PATH="$PATH:{{ gopath }}"
+      PATH="$PATH:{{ gopath }}/bin"
   tags:
     path, go-path
