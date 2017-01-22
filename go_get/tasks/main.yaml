@@ -1,0 +1,25 @@
+---
+- name: Initialize GOPATH
+  file:
+    path:
+      "{{ gopath }}"
+    state:
+      directory
+
+- name: Install Go Package
+  command:
+    go get -u {{ item }}
+  with_items:
+    "{{ go_get.packages }}"
+  environment:
+    GOPATH:
+      "{{ gopath }}"
+
+- name: Add gopath/bin to path
+  lineinfile:
+    dest:
+      "{{ user_home }}/.profile"
+    line:
+      PATH="$PATH:{{ gopath }}"
+  tags:
+    path, go-path
