@@ -1,6 +1,6 @@
 ---
 - name: Update apt packages
-  apt: upgrade=dist _update_cache=yes
+  apt: upgrade=dist update_cache={{ _update_cache | default(omit) }}
   when: ansible_os_family == "Debian"
   become: yes
   tags: update
