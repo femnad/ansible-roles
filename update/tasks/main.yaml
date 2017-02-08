@@ -4,3 +4,17 @@
   when: ansible_os_family == "Debian"
   become: yes
   tags: update
+
+- name: Update homebrew packages
+
+  homebrew:
+    update_homebrew:
+      yes
+    upgrade_all:
+      yes
+
+  when:
+    ansible_os_family == "Darwin"
+
+  tags:
+    update
