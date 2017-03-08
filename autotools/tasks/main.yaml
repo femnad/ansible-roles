@@ -60,7 +60,7 @@
 - name: Build {{ source.name }}
   command: "{{ _build.make_executable }} {{ _build.make_command }}"
   args:
-    chdir: "{{ source.path }}"
+    chdir: "{{ source.path }}/{{ _build.makefile_path }}"
   when: _build.make and not _build.cmake
   tags: build, make
 
