@@ -1,3 +1,10 @@
+- name: Init virtualenv directory
+  file:
+    path:
+      "{{ virtualenv_base }}"
+    state:
+      directory
+
 - name: Create virtualenv
   command:
     virtualenv {{ _virtualenv.virtualenv_path }} -p {{ _virtualenv.python_exe }}

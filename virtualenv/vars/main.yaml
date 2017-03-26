@@ -1,4 +1,8 @@
 ---
+_virtualenv_deps:
+  apt:
+    virtualenv
+
 _virtualenv_default:
   python_exe:
     python3
