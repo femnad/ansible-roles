@@ -18,3 +18,13 @@
 
   tags:
     update
+
+- name: Update FreeBSD packages
+  command:
+    pkg upgrade -y
+  become:
+    yes
+  when:
+    ansible_os_family == "FreeBSD"
+  tags:
+    update
