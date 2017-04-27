@@ -25,7 +25,7 @@
   set_fact:
     source:
       path:
-        "{{ release_store_path }}/{{ extract_path.files[0] }}"
+        "{{ release_store_path }}/{{ extract_path.files[0].split('/')[0] }}"
       name:
         "{{ release.name }}"
   tags: build, make, install
