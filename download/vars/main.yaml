@@ -1,0 +1,5 @@
+---
+download_deps:
+  dnf_yum:
+    - tar
+    - unzip
