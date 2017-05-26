@@ -28,3 +28,17 @@
     ansible_os_family == "FreeBSD"
   tags:
     update
+
+- name: Update Fedora Packages
+
+  dnf:
+    name:
+      "*"
+    state:
+      latest
+
+  when:
+    ansible_distribution == "Fedora"
+
+  tags:
+    update
