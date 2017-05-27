@@ -46,3 +46,19 @@
   when: ansible_os_family == "RedHat" and ansible_distribution != "Fedora"
   become: yes
   tags: deps, deps-yum
+
+- name: Install packages with pacman
+  pacman:
+    name:
+      "{{ item }}"
+    state:
+      latest
+  with_items:
+    "{{ _deps.pacman }}"
+  when:
+    ansible_distribution == "Archlinux"
+  become:
+    yes
+  tags:
+    - deps
+    - deps-pacman

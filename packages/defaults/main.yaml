@@ -4,6 +4,8 @@ _default_deps:
     []
   dnf_yum:
     []
+  pacman:
+    []
   pkg:
     []
   portage:
