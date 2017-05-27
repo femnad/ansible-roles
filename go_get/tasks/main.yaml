@@ -15,6 +15,13 @@
     GOPATH:
       "{{ gopath }}"
 
+- name: Initialize .profile
+  file:
+    path:
+      "{{ user_home }}/.profile"
+    state:
+      touch
+
 - name: Add gopath/bin to path
   lineinfile:
     dest:
