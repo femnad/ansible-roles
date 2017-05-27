@@ -2,3 +2,5 @@ __go_get:
   deps:
     apt:
       golang-go
+    dnf_yum:
+      golang
