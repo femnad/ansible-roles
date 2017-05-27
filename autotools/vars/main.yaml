@@ -3,7 +3,7 @@ _build_deps:
   apt:
     [autoconf, automake, clang, gcc, g++, cmake, libtool, make, pkg-config]
   dnf_yum:
-    [autoconf, automake, libtool, make, pkgconfig]
+    [autoconf, automake, gcc, gcc-c++, libtool, make, pkgconfig]
   pkg:
     [autoconf, automake, libtool, gmake, pkgconf]
   portage:
