@@ -1,7 +1,15 @@
 ---
 _pip_package_deps:
   apt:
+    - gcc
     - libffi-dev
     - libssl-dev
     - python-dev
     - python-virtualenv
+  dnf_yum:
+    - gcc
+    - libffi-devel
+    - openssl-devel
+    - python-devel
+    - python-virtualenv
+    - redhat-rpm-config

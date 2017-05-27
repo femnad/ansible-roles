@@ -1,7 +1,12 @@
 ---
 - name: Install pip packages
-  pip: name={{ item[0] }} version={{ item[1] }} virtualenv={{ virtualenv_path }}
-  with_together:
-    - "{{ pip_deps.keys() }}"
-    - "{{ pip_deps.values() }}"
+  pip:
+    name:
+      "{{ item.key }}"
+    version:
+      "{{ item.value }}"
+    virtualenv:
+      "{{ virtualenv_path }}"
+  with_dict:
+    "{{ pip_deps }}"
   tags: reqs, reqs-pip
