@@ -15,17 +15,26 @@
     GOPATH:
       "{{ gopath }}"
 
+- name: Check profile
+  stat:
+    path:
+      "{{ bash_profile }}"
+  register:
+    bash_profile_status
+
 - name: Initialize .profile
   file:
     path:
-      "{{ user_home }}/.profile"
+      "{{ bash_profile }}"
     state:
       touch
+  when:
+    not bash_profile_status.stat.exists
 
 - name: Add gopath/bin to path
   lineinfile:
     dest:
-      "{{ user_home }}/.profile"
+      "{{ bash_profile }}"
     line:
       PATH="$PATH:{{ gopath }}/bin"
   tags:
