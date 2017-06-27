@@ -75,6 +75,6 @@
   command: "{{ _build.make_executable }} install"
   args:
     chdir: "{{ source.path }}/{{ _build.makefile_path }}"
-  when: _build.make or _build.make_install
+  when: _build.make and _build.make_install
   become: yes
   tags: install
