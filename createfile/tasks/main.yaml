@@ -9,6 +9,9 @@
       yes
     marker:
       ""
+  become:
+    "{{ _createfile.become }}"
+
   tags: createfile
 
 - name: Remove empty lines from the script
@@ -17,4 +20,6 @@
       "{{ _createfile.path }}"
     regexp:
       ^$\n
+  become:
+    "{{ _createfile.become }}"
   tags: createfile
