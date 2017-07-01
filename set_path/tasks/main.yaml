@@ -1,0 +1,9 @@
+---
+- name: Set source
+  set_fact:
+    source:
+      path:
+        "{{ release_store_path }}/{{ release.url | basename | regex_replace('.tar.*$', '') }}"
+      name:
+        "{{ release.name }}"
+  tags: build, make, install
