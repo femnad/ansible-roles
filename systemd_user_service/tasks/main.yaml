@@ -1,0 +1,29 @@
+- name:
+    Initialize user service directory
+  file:
+    path:
+      "{{ user_service_dir }}"
+    state:
+      directory
+  tags:
+    systemd-user-service
+
+- name:
+    Fill in user service template
+  template:
+    src:
+      systemd-user.service.j2
+    dest:
+      "{{ user_service_dir }}/{{ user_service.name }}.service"
+  tags:
+    systemd-user-service
+
+- name:
+    Systemd daemon reload
+  systemd:
+    daemon_reload:
+      yes
+    user:
+      yes
+  tags:
+    systemd-user-service
