@@ -3,7 +3,7 @@
     Create certificate dir
   file:
     path:
-      "{{ _haproxy_config.certificate_dir }}"
+      "{{ _self.cert_dir }}"
     state:
       directory
   become:
@@ -12,9 +12,9 @@
 - name:
     Combine certificates
   shell: >-
-    cat /etc/letsencrypt/live/{{ _haproxy_config.base_domain }}/fullchain.pem
-    /etc/letsencrypt/live/{{ _haproxy_config.base_domain }}/privkey.pem
-    > {{ _haproxy_config.certificate_file }}
+    cat /etc/letsencrypt/live/{{ _self.base_domain }}/fullchain.pem
+    /etc/letsencrypt/live/{{ _self.base_domain }}/privkey.pem
+    > {{ _cert_file }}
   become:
     yes
 
@@ -22,7 +22,7 @@
     Set options in the global section
   lineinfile:
     path:
-      "{{ _haproxy_config.configuration_file }}"
+      "{{ _self.config_file }}"
     line:
       "\ttune.ssl.default-dh-param 2048"
     state:
@@ -38,7 +38,7 @@
     Set options in the defaults section
   lineinfile:
     path:
-      "{{ _haproxy_config.configuration_file }}"
+      "{{ _self.config_file }}"
     line:
       "\t{{ item }}"
     state:
@@ -57,14 +57,14 @@
     Add frontends and backend
   blockinfile:
     path:
-      "{{ _haproxy_config.configuration_file }}"
+      "{{ _self.config_file }}"
     block: |
       frontend www-http
-          bind {{ public_ip }}:80
+          bind {{ _self.public_ip }}:80
           default_backend www-backend
 
       frontend www-https
-          bind {{ public_ip }}:443 ssl crt {{ certificate_file }}
+          bind {{ _self.public_ip }}:443 ssl crt {{ _cert_file }}
           reqadd X-Forwarded-Proto:\ https
           default_backend www-backend
 

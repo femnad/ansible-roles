@@ -1,3 +1,6 @@
 ---
-_haproxy_config:
-  "{{ haproxy_config | combine(_default_haproxy_config) }}"
+_self:
+  "{{ haproxy_config | combine(_defaults) }}"
+
+_cert_file:
+  "{{ _self.cert_dir}}/{{ _self.base_domain }}.pem"

@@ -13,11 +13,13 @@
     Generate certificate
   certbot:
     domains:
-      "{{ certbot_standalone.domains }}"
+      "{{ _self.domains }}"
     authentication:
       standalone
-    expand:
-      "{{ certbot_standalone.expand | default(no) }}"
+    agree_tos:
+      "{{ _self.agree_tos }}"
+    email:
+      "{{ _self.email }}"
   become:
     yes
 
