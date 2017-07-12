@@ -70,7 +70,7 @@
 
       backend www-backend
           redirect scheme https if !{ ssl_fc }
-          server s0 {{ _haproxy_config.backend_server }}
+          server s0 {{ _self.backend_server }}
   become:
     yes
   notify:
