@@ -1,0 +1,32 @@
+---
+- name:
+    Stop HAProxy
+  service:
+    name:
+      haproxy
+    state:
+      stopped
+  become:
+    yes
+
+- name:
+    Generate certificate
+  certbot:
+    domains:
+      "{{ certbot_standalone.domains }}"
+    authentication:
+      standalone
+    expand:
+      "{{ certbot_standalone.expand | default(no) }}"
+  become:
+    yes
+
+- name:
+    Start HAProxy
+  service:
+    name:
+      haproxy
+    state:
+      started
+  become:
+    yes

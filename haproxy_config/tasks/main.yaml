@@ -1,0 +1,77 @@
+---
+- name:
+    Create certificate dir
+  file:
+    path:
+      "{{ _haproxy_config.certificate_dir }}"
+    state:
+      directory
+  become:
+    yes
+
+- name:
+    Combine certificates
+  shell: >-
+    cat /etc/letsencrypt/live/{{ _haproxy_config.base_domain }}/fullchain.pem
+    /etc/letsencrypt/live/{{ _haproxy_config.base_domain }}/privkey.pem
+    > {{ _haproxy_config.certificate_file }}
+  become:
+    yes
+
+- name:
+    Set options in the global section
+  lineinfile:
+    path:
+      "{{ _haproxy_config.configuration_file }}"
+    line:
+      "\ttune.ssl.default-dh-param 2048"
+    state:
+      present
+    insertafter:
+      ^global$
+  become:
+    yes
+  notify:
+    haproxy-restart
+
+- name:
+    Set options in the defaults section
+  lineinfile:
+    path:
+      "{{ _haproxy_config.configuration_file }}"
+    line:
+      "\t{{ item }}"
+    state:
+      present
+    insertafter:
+      ^defaults$
+  with_items:
+    - option forwardfor
+    - option http-server-close
+  become:
+    yes
+  notify:
+    haproxy-restart
+
+- name:
+    Add frontends and backend
+  blockinfile:
+    path:
+      "{{ _haproxy_config.configuration_file }}"
+    block: |
+      frontend www-http
+          bind {{ public_ip }}:80
+          default_backend www-backend
+
+      frontend www-https
+          bind {{ public_ip }}:443 ssl crt {{ certificate_file }}
+          reqadd X-Forwarded-Proto:\ https
+          default_backend www-backend
+
+      backend www-backend
+          redirect scheme https if !{ ssl_fc }
+          server s0 {{ _haproxy_config.backend_server }}
+  become:
+    yes
+  notify:
+    haproxy-restart

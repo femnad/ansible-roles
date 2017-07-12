@@ -1,0 +1,8 @@
+---
+_default_haproxy_config:
+  certificate_dir:
+    /etc/haproxy/certs
+  certificate_file:
+    /etc/haproxy/certs/{{ base_domain }}.pem
+  configuration_file:
+    /etc/haproxy/haproxy.cfg

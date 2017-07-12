@@ -1,0 +1,3 @@
+---
+_haproxy_config:
+  "{{ haproxy_config | combine(_default_haproxy_config) }}"
