@@ -2,3 +2,7 @@
 setuptools:
   virtualenv_name:
     "{{ source.name }}"
+  install_requirements:
+    no
+  requirements_file:
+    requirements.txt

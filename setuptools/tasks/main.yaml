@@ -8,3 +8,16 @@
   environment:
     "{{ _setuptools.environment }}"
   tags: setuptools, setuptools-install, path
+
+- name:
+    Install requirements for {{ source.name }}
+  command:
+    pip install -r {{ _setuptools.requirements_file }}
+  args:
+    chdir:
+      "{{ source.path }}"
+  environment:
+    "{{ _setuptools.environment }}"
+  when:
+    _setuptools.install_requirements
+  tags: setuptools
