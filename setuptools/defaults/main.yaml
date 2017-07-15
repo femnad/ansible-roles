@@ -1,8 +1,16 @@
 ---
-setuptools:
-  virtualenv_name:
-    "{{ source.name }}"
+_defaults:
+  command:
+    install
+  deps:
+    apt:
+      - virtualenv
   install_requirements:
     no
+  python_exe:
+    python3
   requirements_file:
     requirements.txt
+
+setuptools:
+  {}

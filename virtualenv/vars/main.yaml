@@ -1,19 +1,16 @@
 ---
-_virtualenv_deps:
-  apt:
-    virtualenv
-
-_virtualenv_default:
-  python_exe:
-    python3
-  virtualenv_path:
-    "{{ virtualenv_base }}/{{ virtualenv_name }}"
-
 _virtualenv:
-  "{{ _virtualenv_default | combine(virtualenv) }}"
+  deps:
+    apt:
+      - virtualenv
+  path:
+    "{{ virtualenv_base }}/{{ virtualenv.name }}"
 
-_virtual_environment:
+_self:
+  "{{ _defaults | combine(_virtualenv) }}"
+
+_environment:
   VIRTUAL_ENV:
-    "{{ _virtualenv.virtualenv_path }}"
+    "{{ _self.path }}"
   PATH:
-    "{{ _virtualenv.virtualenv_path }}/bin:{{ ansible_env.PATH }}"
+    "{{ _self.path }}/bin:{{ ansible_env.PATH }}"

@@ -1,4 +1,2 @@
 dependencies:
   - clone
-  - { role: virtualenv,
-      virtualenv_name: "{{ setuptools.virtualenv_name }}" }

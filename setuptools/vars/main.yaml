@@ -1,15 +1,12 @@
 ---
-__virtualenv_path:
-  "{{ virtualenv_base }}/{{ setuptools.virtualenv_name }}"
+_self:
+  "{{ _defaults | combine(setuptools) }}"
 
-_setuptools_default:
-  command:
-    install
-  environment:
-    VIRTUAL_ENV:
-      "{{ __virtualenv_path }}"
-    PATH:
-      "{{ __virtualenv_path }}/bin:{{ ansible_env.PATH }}"
+_path:
+    "{{ virtualenv_base }}/{{ setuptools.name | default(source.name) }}"
 
-_setuptools:
-  "{{ _setuptools_default | combine(setuptools) }}"
+_environment:
+  VIRTUAL_ENV:
+    "{{ _path }}"
+  PATH:
+    "{{ _path }}/bin:{{ ansible_env.PATH }}"

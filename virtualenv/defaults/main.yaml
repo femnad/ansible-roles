@@ -1,3 +1,4 @@
 ---
-virtualenv:
-  {}
+_defaults:
+  python_exe:
+    python3

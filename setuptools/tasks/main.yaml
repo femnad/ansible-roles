@@ -1,12 +1,37 @@
 ---
+- name: Init base virtualenv directory
+  file:
+    path:
+      "{{ virtualenv_base }}"
+    state:
+      directory
+
+- name: Create virtualenv
+  command:
+    virtualenv {{ _path }} -p {{ _self.python_exe }}
+  args:
+    creates:
+      "{{ _path }}"
+  tags: setuptools, setuptools-virtualenv
+
+- name: Update pip and setuptools
+  command: |
+    pip install --upgrade {{ item }}
+  with_items:
+    - pip
+    - setuptools
+  environment:
+    "{{ _environment }}"
+  tags: setuptools, setuptools-upgrade
+
 - name: Install {{ source.name }} in virtualenv
   command:
-    python setup.py {{ _setuptools.command }}
+    python setup.py {{ _self.command }}
   args:
     chdir:
       "{{ source.path }}"
   environment:
-    "{{ _setuptools.environment }}"
+    "{{ _environment }}"
   tags: setuptools, setuptools-install, path
 
 - name:
@@ -17,7 +42,7 @@
     chdir:
       "{{ source.path }}"
   environment:
-    "{{ _setuptools.environment }}"
+    "{{ _environment }}"
   when:
-    _setuptools.install_requirements
+    _self.install_requirements
   tags: setuptools
