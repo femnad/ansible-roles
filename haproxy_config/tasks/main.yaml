@@ -8,6 +8,8 @@
       directory
   become:
     yes
+  tags:
+    haproxy-config
 
 - name:
     Combine certificates
@@ -17,6 +19,8 @@
     > {{ _cert_file }}
   become:
     yes
+  tags:
+    haproxy-config
 
 - name:
     Set options in the global section
@@ -33,6 +37,8 @@
     yes
   notify:
     haproxy-restart
+  tags:
+    haproxy-config
 
 - name:
     Set options in the defaults section
@@ -52,6 +58,8 @@
     yes
   notify:
     haproxy-restart
+  tags:
+    haproxy-config
 
 - name:
     Add frontends and backend
@@ -60,11 +68,11 @@
       "{{ _self.config_file }}"
     block: |
       frontend www-http
-          bind {{ _self.public_ip }}:80
+          bind {{ _self.ip }}:80
           default_backend www-backend
 
       frontend www-https
-          bind {{ _self.public_ip }}:443 ssl crt {{ _cert_file }}
+          bind {{ _self.ip }}:443 ssl crt {{ _cert_file }}
           reqadd X-Forwarded-Proto:\ https
           default_backend www-backend
 
@@ -75,3 +83,5 @@
     yes
   notify:
     haproxy-restart
+  tags:
+    haproxy-config
