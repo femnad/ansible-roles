@@ -8,6 +8,8 @@
       stopped
   become:
     yes
+  tags:
+    certbot-standalone
 
 - name:
     Generate certificate
@@ -22,6 +24,8 @@
       "{{ _self.email }}"
   become:
     yes
+  tags:
+    certbot-standalone
 
 - name:
     Start HAProxy
@@ -32,3 +36,5 @@
       started
   become:
     yes
+  tags:
+    certbot-standalone
