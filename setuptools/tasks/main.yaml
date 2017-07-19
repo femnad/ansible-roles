@@ -37,12 +37,12 @@
 - name:
     Install requirements for {{ source.name }}
   command:
-    pip install -r {{ _setuptools.requirements_file }}
+    pip install -r {{ _self.requirements_file }}
   args:
     chdir:
       "{{ source.path }}"
+    removes:
+      "{{ source.path }}/{{ _self.requirements_file }}"
   environment:
     "{{ _environment }}"
-  when:
-    _self.install_requirements
   tags: setuptools
