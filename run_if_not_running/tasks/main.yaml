@@ -1,0 +1,20 @@
+---
+- name:
+    Check for running process
+  command:
+    "pgrep -af {{ run_if_not_running.command.split() | first }}"
+  register:
+    running_process
+  ignore_errors:
+    yes
+  tags:
+    run-if-not-running
+
+- name:
+    Run command
+  command:
+    "{{ run_if_not_running.command }}"
+  when:
+    running_process.failed
+  tags:
+    run-if-not-running
