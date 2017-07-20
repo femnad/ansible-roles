@@ -1,2 +1,3 @@
 dependencies:
   - clone
+  - { role: packages, deps: "{{ _setuptools_deps }}" }
