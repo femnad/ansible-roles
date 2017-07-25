@@ -2,7 +2,7 @@
 - name:
     Check for running process
   command:
-    "pgrep -af {{ run_if_not_running.command.split() | first }}"
+    "pgrep -f {{ run_if_not_running.command.split() | first }}"
   register:
     running_process
   ignore_errors:
@@ -11,10 +11,19 @@
     run-if-not-running
 
 - name:
+    Kill running process
+  command:
+    kill {{ running_process.stdout }}
+  when:
+    not running_process.failed and _self.restart
+  tags:
+    run-if-not-running
+
+- name:
     Run command
   command:
     "{{ run_if_not_running.command }}"
   when:
-    running_process.failed
+    running_process.failed or (not running_process.failed and _self.restart)
   tags:
     run-if-not-running

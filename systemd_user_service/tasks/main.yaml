@@ -8,6 +8,19 @@
   tags:
     systemd-user-service
 
+# https://www.freedesktop.org/software/systemd/man/journald.conf.html#Options
+- name:
+    Init journal directory
+  file:
+    path:
+      /var/log/journal
+    state:
+      directory
+  become:
+    yes
+  tags:
+    systemd-user-service
+
 - name:
     Fill in user service template
   template:
