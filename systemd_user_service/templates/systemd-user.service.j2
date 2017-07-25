@@ -1,8 +1,13 @@
 [Unit]
-Description={{ user_service.description }}
+Description={{ _self.description }}
 
 [Service]
-ExecStart={{ user_service.exec }}
+ExecStart={{ _self.exec }}
+{% for service_entry in _self.unit_file.service | default({}) %}
+{% for key, value in service_entry.items() %}
+{{ key }}={{ value }}
+{% endfor %}
+{% endfor %}
 
 [Install]
 WantedBy=multi-user.target

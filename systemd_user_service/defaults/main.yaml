@@ -1,0 +1,4 @@
+_defaults:
+  unit_file:
+    service:
+      {}
