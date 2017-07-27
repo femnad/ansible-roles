@@ -67,18 +67,19 @@
     path:
       "{{ _self.config_file }}"
     block: |
-      frontend www-http
+      frontend {{ _self.frontend.http }}
           bind {{ _self.ip }}:80
-          default_backend www-backend
+          default_backend {{ _self.backend }}
 
-      frontend www-https
+      frontend {{ _self.frontend.https }}
           bind {{ _self.ip }}:443 ssl crt {{ _cert_file }}
           reqadd X-Forwarded-Proto:\ https
-          default_backend www-backend
+          default_backend {{ _self.backend }}
 
-      backend www-backend
+      backend {{ _self.backend }}
           redirect scheme https if !{ ssl_fc }
           server s0 {{ _self.backend_server }}
+    marker: "#{mark} haproxy backend: {{ _self.backend }}"
   become:
     yes
   notify:
