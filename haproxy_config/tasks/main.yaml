@@ -62,24 +62,55 @@
     haproxy-config
 
 - name:
-    Add frontends and backend
+    Add https frontend
+  blockinfile:
+    path:
+      "{{ _self.config_file }}"
+      # from http://cbonte.github.io/haproxy-dconv/1.6/configuration.html#5.1-crt:
+      #
+      # crt <cert>
+      # ...
+      # If a directory name is used instead of a PEM file, then all files found in
+      # that directory will be loaded
+      #
+    block: |
+      frontend {{ ansible_hostname }}-https
+          bind {{ _self.ip }}:443 ssl crt {{ _self.cert_dir }}
+    marker:
+      "#{mark} haproxy main frontend for {{ ansible_hostname }}"
+  become:
+    yes
+  notify:
+    haproxy-restart
+  tags:
+    haproxy-config
+
+- name:
+    Add use backend line
+  lineinfile:
+    path:
+      "{{ _self.config_file }}"
+    line:
+      "\tuse_backend {{ _self.backend }} if { ssl_fc_sni_end {{ _self.base_domain }} }"
+    insertafter:
+      "\tbind {{ _self.ip }}:443 crt {{ _self.cert_dir }}"
+  become:
+    yes
+  notify:
+    haproxy-restart
+  tags:
+    haproxy-config
+
+- name:
+    Add backend _self.backend
   blockinfile:
     path:
       "{{ _self.config_file }}"
     block: |
-      frontend {{ _self.frontend.http }}
-          bind {{ _self.ip }}:80
-          default_backend {{ _self.backend }}
-
-      frontend {{ _self.frontend.https }}
-          bind {{ _self.ip }}:443 ssl crt {{ _cert_file }}
-          reqadd X-Forwarded-Proto:\ https
-          default_backend {{ _self.backend }}
-
       backend {{ _self.backend }}
-          redirect scheme https if !{ ssl_fc }
           server s0 {{ _self.backend_server }}
-    marker: "#{mark} haproxy backend: {{ _self.backend }}"
+    marker:
+      "#{mark} haproxy backend {{ _self.backend }}"
   become:
     yes
   notify:
