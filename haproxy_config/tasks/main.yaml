@@ -92,8 +92,8 @@
       "{{ _self.config_file }}"
     line:
       "\tuse_backend {{ _self.backend }} if { ssl_fc_sni_end {{ _self.base_domain }} }"
-    insertafter:
-      "\tbind {{ _self.ip }}:443 crt {{ _self.cert_dir }}"
+    insertbefore:
+      ^backend.*
   become:
     yes
   notify:
@@ -102,7 +102,7 @@
     haproxy-config
 
 - name:
-    Add backend _self.backend
+    Add backend {{ _self.backend }}
   blockinfile:
     path:
       "{{ _self.config_file }}"
