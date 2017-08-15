@@ -2,5 +2,7 @@ __go_get:
   deps:
     apt:
       golang-go
+    brew:
+      go
     dnf_yum:
       golang
