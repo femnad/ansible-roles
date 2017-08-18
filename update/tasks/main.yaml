@@ -1,9 +1,19 @@
 ---
-- name: Update apt packages
-  apt: upgrade=dist update_cache=yes
-  when: ansible_os_family == "Debian"
-  become: yes
-  tags: update
+- name:
+    Update apt packages
+  apt:
+    upgrade:
+      dist
+    update_cache:
+      yes
+    default_release:
+      "{{ _default_release | default(omit) }}"
+  when:
+    ansible_os_family == "Debian"
+  become:
+    yes
+  tags:
+    update
 
 - name: Update homebrew packages
 
