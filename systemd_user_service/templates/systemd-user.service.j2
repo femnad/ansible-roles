@@ -3,11 +3,11 @@ Description={{ _self.description }}
 
 [Service]
 ExecStart={{ _self.exec }}
-{% for service_entry in _self.unit_file.service | default({}) %}
-{% for key, value in service_entry.items() %}
+{% if _self.unit_file.service is defined %}
+{% for key, value in _self.unit_file.service.items() | default({}) %}
 {{ key }}={{ value }}
 {% endfor %}
-{% endfor %}
+{% endif %}
 
 [Install]
 WantedBy=multi-user.target

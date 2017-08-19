@@ -2,11 +2,11 @@
     Initialize user service directory
   file:
     path:
-      "{{ user_service_dir }}"
+      "{{ systemd_service_dir }}"
     state:
       directory
   tags:
-    systemd-user-service
+    systemd-systemd-service
 
 # https://www.freedesktop.org/software/systemd/man/journald.conf.html#Options
 - name:
@@ -19,7 +19,21 @@
   become:
     yes
   tags:
-    systemd-user-service
+    systemd-systemd-service
+
+- name:
+    Fill in system service template
+  template:
+    src:
+      systemd-user.service.j2
+    dest:
+      "{{ systemd_service_dir }}/{{ systemd_service.name }}.service"
+  when:
+    not (systemd_service.user_service | default(true))
+  become:
+    yes
+  tags:
+    systemd-service
 
 - name:
     Fill in user service template
@@ -27,9 +41,11 @@
     src:
       systemd-user.service.j2
     dest:
-      "{{ user_service_dir }}/{{ user_service.name }}.service"
+      "{{ user_service_dir }}/{{ systemd_service.name }}.service"
+  when:
+    systemd_service.user_service | default(true)
   tags:
-    systemd-user-service
+    systemd-service
 
 - name:
     Systemd daemon reload
@@ -37,6 +53,22 @@
     daemon_reload:
       yes
     user:
-      yes
+      "{{ systemd_service.user_service | default(true) }}"
+  become:
+    "{{ not (systemd_service.user_service | default(true)) }}"
   tags:
-    systemd-user-service
+    systemd-service
+
+- name:
+    Start service
+  systemd:
+    name:
+      "{{ systemd_service.name }}"
+    state:
+      started
+    user:
+      "{{ systemd_service.user_service | default(true) }}"
+  become:
+    "{{ not (systemd_service.user_service | default(true)) }}"
+  tags:
+    systemd-service

@@ -1,6 +1,9 @@
 ---
+systemd_service_dir:
+  /lib/systemd/system
+
 user_service_dir:
   "{{ user_home }}/.config/systemd/user"
 
 _self:
-  "{{ _defaults | combine(user_service) }}"
+  "{{ _defaults | combine(systemd_service) }}"
