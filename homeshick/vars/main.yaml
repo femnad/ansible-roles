@@ -1,16 +1,12 @@
 bash_executable:
   /bin/bash
+
 deps:
   pkg:
     bash
-gitlab_base_url_https:
-  https://gitlab.com
-gitlab_base_url_ssh:
-  git@gitlab.com
-gitlab_username:
+
+git_host_username:
   femnad
-gitlab_repo_prefix:
-  "{{ gitlab_base_url_https }}/{{ gitlab_username }}"
 
 homesick_repos_path:
   "{{ user_home }}/.homesick/repos"
@@ -25,8 +21,10 @@ _homeshick:
   "{{ _default | combine(homeshick) }}"
 
 _homeshick_repo:
-  name: homeshick
-  url: https://github.com/andsens/homeshick.git
+  name:
+    homeshick
+  url:
+    https://github.com/andsens/homeshick.git
 
 _homeshick_clone_path:
   "{{ user_home }}/.homesick/repos"
