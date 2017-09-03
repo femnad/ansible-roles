@@ -8,7 +8,7 @@
 
 - name: Create virtualenv
   command:
-    virtualenv {{ _path }} -p {{ _self.python_exe }}
+    virtualenv {{ _path }} -p {{ _self.python_exe }} {% if _self.site_packages %}--system-site-packages{% endif %}
   args:
     creates:
       "{{ _path }}"

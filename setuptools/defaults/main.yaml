@@ -11,6 +11,8 @@ _defaults:
     python3
   requirements_file:
     requirements.txt
+  site_packages:
+    no
 
 setuptools:
   {}
