@@ -1,4 +1,14 @@
 ---
+- name:
+    Install packages with {{ ansible_pkg_mgr }}
+  package:
+    name:
+      '{{ item }}'
+    state:
+      latest
+  with_items:
+    '{{ _deps.common }}'
+
 - name: Install packages with apt
   apt:
     name:
