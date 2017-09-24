@@ -4,6 +4,8 @@ _default_deps:
     []
   brew:
     []
+  common:
+    []
   dnf_yum:
     []
   pacman:
