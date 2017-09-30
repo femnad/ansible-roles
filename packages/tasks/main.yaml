@@ -6,6 +6,8 @@
       '{{ item }}'
     state:
       latest
+  become:
+    yes
   with_items:
     '{{ _deps.common }}'
 

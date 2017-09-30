@@ -1,0 +1,8 @@
+---
+- include_role:
+    name:
+      packages
+
+- include_role:
+    name:
+      source_install
