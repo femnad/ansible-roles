@@ -1,16 +1,4 @@
 ---
-- name:
-    Install packages with {{ ansible_pkg_mgr }}
-  package:
-    name:
-      '{{ item }}'
-    state:
-      latest
-  become:
-    yes
-  with_items:
-    '{{ _deps.common }}'
-
 - name: Install packages with apt
   apt:
     name:
@@ -22,7 +10,7 @@
     default_release:
       "{{ _default_release | default(omit) }}"
   with_items:
-    "{{ _deps.apt }}"
+    "{{ _deps.apt + _deps.common }}"
   when: ansible_os_family == "Debian"
   become: yes
   tags: deps, deps-apt
@@ -30,7 +18,7 @@
 - name: Install packages with dnf
   dnf: name={{ item }} state=latest
   with_items:
-    "{{ _deps.dnf_yum }}"
+    "{{ _deps.dnf_yum + _deps.common }}"
   when: ansible_distribution == "Fedora"
   become: yes
   tags: deps, deps-dnf
@@ -38,7 +26,7 @@
 - name: Install packages with pkg
   pkgng: name={{ item }} state=present
   with_items:
-    "{{ _deps.pkg }}"
+    "{{ _deps.pkg + _deps.common }}"
   when: ansible_distribution == "FreeBSD"
   become: yes
   tags: deps, deps-pkg
@@ -46,7 +34,7 @@
 - name: Install packages with portage
   portage: name={{ item }} state=present
   with_items:
-    "{{ _deps.portage }}"
+    "{{ _deps.portage + _deps.common }}"
   when: ansible_distribution == "Gentoo"
   become: yes
   tags: deps, deps-portage
@@ -54,7 +42,7 @@
 - name: Install packages with yum
   yum: name={{ item }} state=latest
   with_items:
-    "{{ _deps.dnf_yum }}"
+    "{{ _deps.dnf_yum + _deps.common }}"
   when: ansible_os_family == "RedHat" and ansible_distribution != "Fedora"
   become: yes
   tags: deps, deps-yum
@@ -66,7 +54,7 @@
     state:
       latest
   with_items:
-    "{{ _deps.pacman }}"
+    "{{ _deps.pacman + _deps.common }}"
   when:
     ansible_distribution == "Archlinux"
   become:
@@ -81,7 +69,7 @@
     name:
       "{{ item }}"
   with_items:
-    "{{ _deps.brew }}"
+    "{{ _deps.brew + _deps.common }}"
   when:
     ansible_distribution == "MacOSX"
   tags:
