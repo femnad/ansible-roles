@@ -62,16 +62,3 @@
   tags:
     - deps
     - deps-pacman
-
-- name:
-    Install packages with homebrew
-  homebrew:
-    name:
-      "{{ item }}"
-  with_items:
-    "{{ _deps.brew + _deps.common }}"
-  when:
-    ansible_distribution == "MacOSX"
-  tags:
-    - deps
-    - deps-brew

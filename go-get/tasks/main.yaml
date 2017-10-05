@@ -5,12 +5,14 @@
       "{{ gopath }}"
     state:
       directory
+  when:
+    _self.initialize
 
 - name: Install Go Package
   command:
     go get -u {{ item }}
   with_items:
-    "{{ go_get.packages }}"
+    "{{ _self.packages }}"
   environment:
     GOPATH:
       "{{ gopath }}"
@@ -21,6 +23,8 @@
       "{{ bash_profile }}"
   register:
     bash_profile_status
+  when:
+    _self.initialize
 
 - name: Initialize .profile
   file:
@@ -29,7 +33,7 @@
     state:
       touch
   when:
-    not bash_profile_status.stat.exists
+    _self.initialize and not bash_profile_status.stat.exists
 
 - name: Add gopath/bin to path
   lineinfile:
@@ -39,3 +43,5 @@
       PATH="$PATH:{{ gopath }}/bin"
   tags:
     path, go-path
+  when:
+    _self.initialize

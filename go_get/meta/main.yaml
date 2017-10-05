@@ -1,3 +1,0 @@
----
-dependencies:
-  - { role: packages, deps: "{{ __go_get.deps }}" }

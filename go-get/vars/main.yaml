@@ -1,0 +1,9 @@
+_go_get:
+  deps:
+    apt:
+      [golang-go]
+    dnf_yum:
+      [golang]
+
+_self:
+  "{{_defaults | combine(_go_get) | combine(go_get) }}"
