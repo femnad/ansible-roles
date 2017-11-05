@@ -3,7 +3,7 @@ bash_executable:
 
 deps:
   pkg:
-    bash
+    [bash]
 
 git_host_username:
   femnad
