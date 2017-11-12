@@ -1,10 +1,21 @@
 ---
-- name:
-    Build {{ source.name }}
+- name: Check for cargo in PATH
   command:
-    cargo build --release
-  args:
-    chdir:
-      "{{ source.path }}"
-  tags: cargo, build
+    which cargo
+  register:
+    which_result
+  failed_when:
+    which_result.rc not in [0, 1]
 
+- include_role:
+    name:
+      packages
+  when:
+    which_result.rc == 1
+
+- name:
+    Install cargo crate {{ cargo.crate }}
+  command:
+    cargo install --force {{ cargo.crate }}
+  tags:
+    cargo
