@@ -71,3 +71,14 @@
   when: _build.make or _build.make_install
   become: yes
   tags: install
+
+- name:
+    Run ldconfig
+  command:
+    ldconfig
+  become:
+    yes
+  when:
+    _build.make_install
+  tags:
+    install
