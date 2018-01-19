@@ -48,9 +48,17 @@
 - name: Clean artifacts {{ source.name }}
   command: "{{ _build.make_executable }} clean"
   args:
-    chdir: "{{ source.path}}"
-  when: _build.make and _build.clean
+    chdir: "{{ source.path }}"
+  when: _build.make and _build.clean and not _build.cmake
   tags: build, clean
+
+- name: Clean artifacts {{ source.name }} for cmake
+  command: "{{ _build.make_executable }} clean"
+  args:
+    chdir: "{{ source.path }}/{{ _build.makefile_path }}"
+  when: _build.make and _build.clean and _build.cmake
+  tags: build, clean
+
 - name: Remove generated artifacts {{ source.name }}
   file: path="{{ source.path }}/{{ item }}" state=absent
   with_items:
