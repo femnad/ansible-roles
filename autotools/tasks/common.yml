@@ -1,0 +1,25 @@
+- name: Build {{ source.name }}
+  command: "{{ _build.make_executable }} {{ _build.make_command }}"
+  args:
+    chdir: "{{ source.path }}/{{ _build.makefile_path }}"
+  when: _build.make or _build.cmake
+  tags: build, make
+
+- name: Install {{ source.name }}
+  command: "{{ _build.make_executable }} install"
+  args:
+    chdir: "{{ source.path }}/{{ _build.makefile_path }}"
+  when:  _build.make_install
+  become: yes
+  tags: install
+
+- name:
+    Run ldconfig
+  command:
+    ldconfig
+  become:
+    yes
+  when:
+    _build.make_install
+  tags:
+    install

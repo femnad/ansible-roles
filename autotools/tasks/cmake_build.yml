@@ -1,0 +1,26 @@
+- name: Set makefile path
+  set_fact:
+    _build:
+      "{{ _build | combine({'makefile_path': 'build'}) }}"
+
+- name: Generate build directory
+  file:
+    path:
+      "{{ source.path }}/{{ _build.makefile_path }}"
+    state:
+      directory
+  tags: build
+
+- name: Generate Makefile with
+  command:
+    cmake ..
+  args:
+    chdir:
+      "{{ source.path }}/{{ _build.makefile_path }}"
+  tags: build
+
+- name: Clean artifacts {{ source.name }}
+  command: "{{ _build.make_executable }} clean"
+  args:
+    chdir: "{{ source.path }}/{{ _build.makefile_path }}"
+  tags: build, clean

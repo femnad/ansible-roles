@@ -1,0 +1,33 @@
+- name: Generate build configuration {{ source.name }}
+  command: autoreconf -i
+  args:
+    chdir: "{{ source.path }}"
+  tags: build, autoconf
+
+- name: Configure {{ source.name }}
+  command: "{{ _build.configure_command }} {{ _build.configuration }}"
+  args:
+    chdir: "{{ source.path }}"
+  when: _build.configure
+  tags: build, configure
+
+- name: Set make executable
+  set_fact:
+    _build:
+      "{{ _build | combine({'make_executable': 'gmake'}) }}"
+  when:
+    ansible_distribution == "FreeBSD"
+  tags: build, make, install
+
+- name: Clean artifacts {{ source.name }}
+  command: "{{ _build.make_executable }} clean"
+  args:
+    chdir: "{{ source.path }}"
+  when: _build.make and _build.clean
+  tags: build, clean
+
+- name: Remove generated artifacts {{ source.name }}
+  file: path="{{ source.path }}/{{ item }}" state=absent
+  with_items:
+    "{{ _build.generated_artifacts }}"
+  tags: build, clean
