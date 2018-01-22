@@ -2,3 +2,4 @@ _defaults:
   unit_file:
     service:
       {}
+  user_service: yes
