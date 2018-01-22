@@ -26,11 +26,11 @@
     Fill in system service template
   template:
     src:
-      systemd-user.service.j2
+      systemd.service.j2
     dest:
-      "{{ systemd_service_dir }}/{{ systemd_service.name }}.service"
+      "{{ systemd_service_dir }}/{{ _self.name }}.service"
   when:
-    not (systemd_service.user_service | default(true))
+    not _self.user_service
   become:
     yes
   tags:
@@ -40,11 +40,11 @@
     Fill in user service template
   template:
     src:
-      systemd-user.service.j2
+      systemd.service.j2
     dest:
-      "{{ user_service_dir }}/{{ systemd_service.name }}.service"
+      "{{ user_service_dir }}/{{ _self.name }}.service"
   when:
-    systemd_service.user_service | default(true)
+    _self.user_service
   tags:
     systemd-service
 
@@ -54,22 +54,29 @@
     daemon_reload:
       yes
     user:
-      "{{ systemd_service.user_service | default(true) }}"
+      "{{ _self.user_service }}"
   become:
-    "{{ not (systemd_service.user_service | default(true)) }}"
+    "{{ not _self.user_service }}"
   tags:
     systemd-service
 
 - name:
-    Start service
+    Enable the service
   systemd:
-    name:
-      "{{ systemd_service.name }}"
-    state:
-      started
-    user:
-      "{{ systemd_service.user_service | default(true) }}"
-  become:
-    "{{ not (systemd_service.user_service | default(true)) }}"
+    name: "{{ _self.name }}{{ _self.instance | default(omit) }}"
+    user: "{{ _self.user_service }}"
+    enabled: yes
+  become: "{{ not _self.user_service }}"
+  tags:
+    systemd-service
+
+- name:
+    Start the service
+  systemd:
+    name: "{{ _self.name }} "
+    state: started
+    enabled: yes
+  become: "{{ not _self.user_service }}"
+  when: _self.start
   tags:
     systemd-service

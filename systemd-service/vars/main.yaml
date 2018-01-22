@@ -1,6 +1,6 @@
 ---
 systemd_service_dir:
-  /lib/systemd/system
+  /etc/systemd/system
 
 user_service_dir:
   "{{ user_home }}/.config/systemd/user"
