@@ -2,9 +2,10 @@
     Initialize user service directory
   file:
     path:
-      "{{ systemd_service_dir }}"
+      "{{ user_service_dir }}"
     state:
       directory
+  when: _self.user_service
   tags:
     systemd-systemd-service
 
