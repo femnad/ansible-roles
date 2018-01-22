@@ -22,6 +22,26 @@
   tags:
     systemd-systemd-service
 
+- name: Determine full path of the exec
+  command: which {{ _self.exec.split() | first }}
+  register: which_exec
+  when: not _self.absolute_exec
+
+- name: Build ExecStart stanza from executable path and arguments
+  vars:
+    args:
+      "{{ _self.exec.split()[1:] }}"
+  set_fact:
+    exec_start:
+      "{{ which_exec.stdout }} {{ ' '.join(args) }}"
+  when: not _self.absolute_exec
+
+- name: Set ExecStart stanza
+  set_fact:
+    exec_start:
+      "{{ _self.exec }}"
+  when: _self.absolute_exec
+
 - name:
     Fill in system service template
   template:
@@ -49,31 +69,35 @@
     systemd-service
 
 - name:
-    Systemd daemon reload
+    Enable the service
   systemd:
-    daemon_reload:
-      yes
-    user:
-      "{{ _self.user_service }}"
-  become:
-    "{{ not _self.user_service }}"
+    daemon-reload: yes
+    name: "{{ _self.name }}"
+    user: "{{ _self.user_service }}"
+    enabled: yes
+  become: "{{ not _self.user_service }}"
+  when: not _self.instance
   tags:
     systemd-service
 
 - name:
-    Enable the service
+    Enable the service for instance
   systemd:
-    name: "{{ _self.name }}{{ _self.instance | default(omit) }}"
+    daemon-reload: yes
+    name: "{{ _self.name }}{{ _self.instance }}"
     user: "{{ _self.user_service }}"
     enabled: yes
   become: "{{ not _self.user_service }}"
+  when: _self.instance
   tags:
     systemd-service
 
 - name:
     Start the service
   systemd:
-    name: "{{ _self.name }} "
+    daemon-reload: yes
+    name: "{{ _self.name }}"
+    user: "{{ _self.user_service }}"
     state: started
     enabled: yes
   become: "{{ not _self.user_service }}"

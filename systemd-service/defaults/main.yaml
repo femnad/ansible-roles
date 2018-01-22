@@ -1,4 +1,7 @@
 ---
 _defaults:
+  absolute_exec: yes
+  instance: false
+  start: yes
   user_service: yes
   wanted_by: default

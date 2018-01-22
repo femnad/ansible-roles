@@ -3,7 +3,7 @@ Description={{ _self.description }}
 {% if _self.before is defined %}Before={{ _self.before }}.target{% endif %}
 
 [Service]
-ExecStart={{ _self.exec }}
+ExecStart={{ exec_start }}
 {% if _self.service is defined %}
 {% for key, value in _self.service.items() %}
 {{ key }}={{ value }}
