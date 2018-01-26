@@ -21,6 +21,7 @@
     yes
   tags:
     haproxy-config
+  notify: haproxy-restart
 
 - name:
     Set options in the global section

@@ -2,4 +2,4 @@
 deps:
   common:
     - cargo
-    - rust
+    - rustc
