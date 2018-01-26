@@ -20,6 +20,6 @@
   become:
     yes
   when:
-    _build.make_install
+    _build.make_install and _build.ldconfig
   tags:
     install
