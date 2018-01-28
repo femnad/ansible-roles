@@ -1,9 +1,9 @@
 ---
 - name:
-    Stop HAProxy
+    Stop the SSL listener service
   service:
     name:
-      haproxy
+      "{{ _self.service }}"
     state:
       stopped
   become:
@@ -28,10 +28,10 @@
     certbot-standalone
 
 - name:
-    Start HAProxy
+    Start the SSL listener service
   service:
     name:
-      haproxy
+      "{{ _self.service }}"
     state:
       started
   become:

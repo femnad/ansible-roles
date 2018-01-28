@@ -1,0 +1,13 @@
+---
+- name: Generate the site template
+  template:
+    src: nginx-site.j2
+    dest: "{{ sites_available }}/{{ _self.site }}"
+  become: yes
+
+- name: Enable the site
+  file:
+    path: "{{ sites_enabled }}/{{ _self.site }}"
+    src: "{{ sites_available }}/{{ _self.site }}"
+    state: link
+  become: yes

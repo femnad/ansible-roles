@@ -1,0 +1,9 @@
+server {
+    listen {{ _self.listen }} default_server;
+    root {{ _self.root }};
+    server_name {{ _self.name }};
+
+    ssl_certificate {{ _self.ssl.base }}/{{ _self.ssl.certificate }};
+    ssl_certificate_key {{ _self.ssl.base }}/{{ _self.ssl.key }};
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+}
