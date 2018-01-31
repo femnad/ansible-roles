@@ -1,0 +1,17 @@
+---
+- name:
+    Update Debian family packages
+  apt:
+    upgrade: dist
+    update_cache: yes
+    default_release: "{{ _default_release | default(omit) }}"
+  become: yes
+  tags: update
+
+- name: Check if kernel image was updated
+  shell: tail -n 2 /var/log/apt/history.log | head -n 1 | grep linux-image
+  register: grep_linux_image_in_history_tail
+  failed_when: grep_linux_image_in_history_tail.rc not in [0, 1]
+
+- import_role: reboot-host
+  when: grep_linux_image_in_history_tail.rc == 1

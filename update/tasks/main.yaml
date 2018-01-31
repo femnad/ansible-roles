@@ -1,19 +1,6 @@
 ---
-- name:
-    Update Debian family packages
-  apt:
-    upgrade:
-      dist
-    update_cache:
-      yes
-    default_release:
-      "{{ _default_release | default(omit) }}"
-  when:
-    ansible_os_family == "Debian"
-  become:
-    yes
-  tags:
-    update
+- import_tasks: apt.yml
+  when: ansible_os_family == "Debian"
 
 - name: Update FreeBSD family packages
   command:
