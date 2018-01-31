@@ -1,6 +1,6 @@
 ---
 - name:
-    Update apt packages
+    Update Debian family packages
   apt:
     upgrade:
       dist
@@ -15,21 +15,7 @@
   tags:
     update
 
-- name: Update homebrew packages
-
-  homebrew:
-    update_homebrew:
-      yes
-    upgrade_all:
-      yes
-
-  when:
-    ansible_os_family == "Darwin"
-
-  tags:
-    update
-
-- name: Update FreeBSD packages
+- name: Update FreeBSD family packages
   command:
     pkg upgrade -y
   become:
@@ -40,18 +26,22 @@
     update
 
 - name: Update Fedora Packages
-
   dnf:
     name:
       "*"
     state:
       latest
-
   become:
     yes
-
   when:
     ansible_distribution == "Fedora"
-
   tags:
     update
+
+- name: Update RedHat family Packages
+  yum:
+    name: "*"
+    state: latest
+  become: yes
+  when: ansible_os_family == "RedHat"
+  tags: update
