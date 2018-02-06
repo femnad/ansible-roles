@@ -13,5 +13,6 @@
   register: grep_linux_image_in_history_tail
   failed_when: grep_linux_image_in_history_tail.rc not in [0, 1]
 
-- import_role: reboot-host
+- import_role:
+    name: reboot-host
   when: grep_linux_image_in_history_tail.rc == 1
