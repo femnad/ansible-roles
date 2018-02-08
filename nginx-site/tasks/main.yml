@@ -4,6 +4,7 @@
     src: nginx-site.j2
     dest: "{{ sites_available }}/{{ _self.site }}"
   become: yes
+  notify: restart-nginx
 
 - name: Enable the site
   file:
@@ -11,3 +12,12 @@
     src: "{{ sites_available }}/{{ _self.site }}"
     state: link
   become: yes
+  notify: restart-nginx
+
+- name: Redirect http requests
+  copy:
+    src: default
+    dest: "{{ sites_available }}/default"
+  become: yes
+  when: _self.redirect_http
+  notify: restart-nginx

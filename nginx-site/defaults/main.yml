@@ -1,4 +1,7 @@
 sites_available: /etc/nginx/sites-available
 sites_enabled: /etc/nginx/sites-enabled
-_defaults: {}
+
+_defaults:
+  redirect_http: yes
+
 nginx_site: {}
