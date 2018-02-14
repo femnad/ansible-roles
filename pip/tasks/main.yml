@@ -1,8 +1,6 @@
 ---
-- name: Install {{ pip.name }} via pip
-  pip:
-    name: "{{ pip.name }}"
-    editable: "{{ pip.editable | default(omit) }}"
-    virtualenv: "{{ pip.virtualenv }}"
-    virtualenv_python: "{{ pip.virtualenv_python | default('python3') }}"
-    virtualenv_site_packages: "{{ pip.virtualenv_site_packages | default(false) }}"
+- import_tasks: virtualenv_install.yml
+  when: pip.virtualenv
+
+- import_tasks: user_install.yml
+  when: not pip.virtualenv

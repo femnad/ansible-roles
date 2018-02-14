@@ -1,0 +1,7 @@
+---
+- name: Install {{ pip.name }} in virtualenv
+  pip:
+    name: "{{ pip.name }}"
+    virtualenv: "{{ pip.virtualenv | default(pip.name) }}"
+    virtualenv_python: "{{ pip.virtualenv_python | default('python3') }}"
+    virtualenv_site_packages: "{{ pip.virtualenv_site_packages | default(false) }}"

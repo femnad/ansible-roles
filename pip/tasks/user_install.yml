@@ -1,0 +1,5 @@
+---
+- name: Install {{ pip.name }} for the user
+  pip:
+    name: "{{ pip.name }}"
+    extra_args: '--user'
