@@ -1,0 +1,30 @@
+- name:
+    Initialize release store path
+  file:
+    path: "{{ release_store_path }}"
+    state: directory
+  when: not _self.exec_only
+
+- vars:
+    extract_path: "{{ user_bin if _self.exec_only else release_store_path }}"
+  name:
+    Download and unarchive {{ _self.url }}
+  unarchive:
+    src: "{{ _self.url }}"
+    dest: "{{ extract_path }}"
+    remote_src: yes
+    list_files: "{{ not _self.exec_only }}"
+  register: extract_path
+  tags: download
+
+- name: Link executable
+  vars:
+    base_dir: "{{ (extract_path.files | first).split('/') | first }}"
+    base_path: "{{ release_store_path }}/{{ base_dir }}"
+  file:
+    src: "{{ base_path }}/{{ item.src | default(base_dir) }}"
+    path: "{{ user_bin }}/{{ item.dest | default(item.src | basename) }}"
+    state: link
+  when: _self.link and not _self.exec_only
+  with_items: "{{ link }}"
+  tags: link
