@@ -2,6 +2,7 @@
   command: autoreconf -i
   args:
     chdir: "{{ source.path }}"
+  when: _build.configure
   tags: build, autoconf
 
 - name: Configure {{ source.name }}
