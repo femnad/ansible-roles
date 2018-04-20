@@ -1,14 +1,18 @@
-- name:
-    Initialize release store path
+- name: Initialize release store path
   file:
     path: "{{ release_store_path }}"
     state: directory
   when: not _self.exec_only
 
+- name: Clean the existing extraction path
+  file:
+    path: "{{ release_store_path }}/{{ _self.purge_dir }}"
+    state: absent
+  when: _self.purge_dir
+
 - vars:
     extract_path: "{{ user_bin if _self.exec_only else release_store_path }}"
-  name:
-    Download and unarchive {{ _self.url }}
+  name: Download and unarchive {{ _self.url }}
   unarchive:
     src: "{{ _self.url }}"
     dest: "{{ extract_path }}"
@@ -26,5 +30,5 @@
     path: "{{ user_bin }}/{{ item.dest | default(item.src | basename) }}"
     state: link
   when: _self.link and not _self.exec_only
-  with_items: "{{ link }}"
+  with_items: "{{ _self.link }}"
   tags: link

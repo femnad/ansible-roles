@@ -1,6 +1,7 @@
 ---
 _defaults:
-  link: false
   exec_only: false
+  link: false
+  purge_dir: false
 
 download_and_link: {}
