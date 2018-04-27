@@ -8,11 +8,11 @@
   become: yes
   tags: update
 
-- name: Check if kernel image was updated
-  shell: tail -n 2 /var/log/apt/history.log | head -n 1 | grep linux-image
-  register: grep_linux_image_in_history_tail
-  failed_when: grep_linux_image_in_history_tail.rc not in [0, 1]
+- name: Check the reboot needed file
+  stat:
+    path: /var/run/reboot-required
+  register: reboot_required
 
 - import_role:
     name: reboot-host
-  when: grep_linux_image_in_history_tail.rc == 0
+  when: reboot_required.stat.exists
