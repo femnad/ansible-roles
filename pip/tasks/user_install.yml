@@ -3,3 +3,4 @@
   pip:
     name: "{{ pip.name }}"
     extra_args: '--user'
+    executable: "{{ pip_executable }}"
