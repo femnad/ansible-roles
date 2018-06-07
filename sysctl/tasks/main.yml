@@ -1,0 +1,8 @@
+---
+- name: Add sysctl configuration item
+  lineinfile:
+    line: "{{ sysctl.config }}"
+    path: "/etc/sysctl.d/{{ sysctl.file }}"
+    create: yes
+  become: yes
+  notify: load-sysctl-settings

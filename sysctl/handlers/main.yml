@@ -1,0 +1,5 @@
+---
+- name: Load sysctl settings
+  command: sysctl -p --system
+  become: yes
+  listen: load-sysctl-settings
