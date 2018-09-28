@@ -74,7 +74,7 @@
     daemon-reload: yes
     name: "{{ _self.name }}"
     user: "{{ _self.user_service }}"
-    enabled: yes
+    enabled: "{{ _self.enable }}"
   become: "{{ not _self.user_service }}"
   when: not _self.instance
   tags:
