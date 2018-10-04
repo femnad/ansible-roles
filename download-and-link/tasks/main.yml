@@ -22,9 +22,11 @@
   register: extracted_path
   tags: download
 
-- name: Set base path and dir
-  set_fact:
+- name: Set base dir and path
+  vars:
     base_dir: "{{ (extracted_path.files | first).split('/') | first }}"
+  set_fact:
+    base_dir: "{{ base_dir }}"
     base_path: "{{ release_store_path }}/{{ base_dir }}"
 
 - name: Link executable
