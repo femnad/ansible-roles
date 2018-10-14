@@ -14,7 +14,12 @@
   register: reboot_required
 
 - name: Reboot host
+  reboot:
+  become: yes
+  register: reboot_stats
+  when: reboot_required.stat.exists
+
+- name: Reboot information
   debug:
-    msg: Rebooting host
-  notify: reboot-host
+    var: reboot_stats
   when: reboot_required.stat.exists

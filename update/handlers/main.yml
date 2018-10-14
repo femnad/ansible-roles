@@ -1,8 +1,0 @@
----
-- name: Reboot server
-  shell: sleep 5; systemctl reboot
-  async: yes
-  poll: 0
-  become: yes
-  when: ansible_service_mgr == 'systemd'
-  listen: reboot-host
