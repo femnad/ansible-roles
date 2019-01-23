@@ -6,6 +6,7 @@ _default_deps:
     []
   common:
     []
+  debian: []
   dnf_yum:
     []
   pacman:

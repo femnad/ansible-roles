@@ -12,6 +12,12 @@
   become: yes
   tags: deps, deps-apt
 
+- name: Install packages for Debion
+  apt:
+    name: '{{ _deps.debian }}'
+  when: ansible_distribution == 'Debian
+  become: yes
+
 - name: Install packages for Ubuntu
   apt:
     name: '{{ _deps.ubuntu }}'
