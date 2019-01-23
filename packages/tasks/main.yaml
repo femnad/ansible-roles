@@ -12,7 +12,7 @@
   become: yes
   tags: deps, deps-apt
 
-- name: Install packages for Debion
+- name: Install packages for Debian
   apt:
     name: '{{ _deps.debian }}'
   when: ansible_distribution == 'Debian'
