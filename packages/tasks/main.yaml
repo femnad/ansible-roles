@@ -12,6 +12,12 @@
   become: yes
   tags: deps, deps-apt
 
+- name: Install packages for Ubuntu
+  apt:
+    name: '{{ _deps.ubuntu }}'
+  when: ansible_distribution == 'Ubuntu'
+  become: yes
+
 - name: Install packages with dnf
   dnf:
     name: "{{ _deps.dnf_yum + _deps.common }}"
