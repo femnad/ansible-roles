@@ -1,0 +1,9 @@
+---
+- import_role:
+    name: clone
+
+- name: Run cargo install on cloned source
+  command: cargo install --path . -f
+  args:
+    chdir: '{{ source.path }}'
+...

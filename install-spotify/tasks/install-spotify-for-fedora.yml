@@ -16,8 +16,4 @@
 - name: Install Spotify using Flatpak
   command: flatpak install -y --from https://flathub.org/repo/appstream/com.spotify.Client.flatpakref
   when: app_info.rc == 1
-
-- name: Add .desktop file for Spotify
-  template:
-    src: spotify.desktop.j2
-    dest: "{{ user_home }}/.local/share/applications/Spotify.desktop"
+...
