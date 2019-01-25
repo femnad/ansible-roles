@@ -1,6 +1,6 @@
 ---
 - import_tasks: install-spotify-for-debian.yml
-  when: ansible_distribution == 'Debian'
+  when: ansible_os_family == 'Debian'
 
 - import_tasks: install-spotify-for-fedora.yml
   when: ansible_distribution == 'Fedora'
