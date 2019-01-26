@@ -1,47 +1,7 @@
 ---
-- name: Initialize GOPATH
-  file:
-    path:
-      "{{ gopath }}"
-    state:
-      directory
-  when:
-    _self.initialize
-
 - name: Install Go Package
   command:
     go get -u {{ item }}
   with_items:
     "{{ _self.packages }}"
-  environment:
-    GOPATH:
-      "{{ gopath }}"
-
-- name: Check profile
-  stat:
-    path:
-      "{{ bash_profile }}"
-  register:
-    bash_profile_status
-  when:
-    _self.initialize
-
-- name: Initialize .profile
-  file:
-    path:
-      "{{ bash_profile }}"
-    state:
-      touch
-  when:
-    _self.initialize and not bash_profile_status.stat.exists
-
-- name: Add gopath/bin to path
-  lineinfile:
-    dest:
-      "{{ bash_profile }}"
-    line:
-      PATH="$PATH:{{ gopath }}/bin"
-  tags:
-    path, go-path
-  when:
-    _self.initialize
+...
