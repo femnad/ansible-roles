@@ -1,0 +1,21 @@
+---
+- import_role:
+    name: source_install
+  vars:
+    repo:
+      name: stumpwm
+      url: https://github.com/stumpwm/stumpwm
+
+- import_role:
+    name: clone
+  vars:
+    repo:
+      name: stumpwm-contrib
+      url: https://github.com/stumpwm/stumpwm-contrib.git
+
+- import_role:
+    name: util
+  vars:
+    util:
+      link: util/stumpish/stumpish
+...

@@ -11,22 +11,22 @@ _clone_deps:
       [dev-vcs/git]
   bzr:
     apt:
-      bzr
+      - bzr
     dnf_yum:
-      bzr
+      - bzr
     pkg:
-      bzr
+      - bzr
     portage:
-      dev-vcs/bzr
+      - dev-vcs/bzr
   hg:
     apt:
-      mercurial
+      - mercurial
     dnf_yum:
-      mercurial
+      - mercurial
     pkg:
-      mercurial
+      - mercurial
     portage:
-      dev-vcs/mercurial
+      - dev-vcs/mercurial
 
 _repo: "{{ _default_repo | combine(repo) }}"
 

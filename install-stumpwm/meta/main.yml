@@ -1,0 +1,11 @@
+---
+dependencies:
+  - role: packages
+    vars:
+      deps:
+        apt: [install-info, sbcl, x11-utils, texinfo]
+        dnf_yum:
+          - sbcl
+          - texinfo
+        portage: [dev-lisp/sbcl]
+...
