@@ -1,26 +1,20 @@
+---
 - name:
     Initialize user service directory
   file:
-    path:
-      "{{ user_service_dir }}"
-    state:
-      directory
+    path: '{{ user_service_dir }}'
+    state: directory
   when: _self.user_service
-  tags:
-    systemd-systemd-service
+  tags: systemd-systemd-service
 
 # https://www.freedesktop.org/software/systemd/man/journald.conf.html#Options
 - name:
     Init journal directory
   file:
-    path:
-      /var/log/journal
-    state:
-      directory
-  become:
-    yes
-  tags:
-    systemd-systemd-service
+    path: /var/log/journal
+    state: directory
+  become: yes
+  tags: systemd-systemd-service
 
 - name: Determine full path of the exec
   command: which {{ _self.exec.split() | first }}
@@ -29,53 +23,39 @@
 
 - name: Build ExecStart stanza from executable path and arguments
   vars:
-    args:
-      "{{ _self.exec.split()[1:] }}"
+    args: '{{ _self.exec.split()[1:] }}'
   set_fact:
-    exec_start:
-      "{{ which_exec.stdout }} {{ ' '.join(args) }}"
+    exec_start: '{{ which_exec.stdout }} {{ ' '.join(args) }}'
   when: not _self.absolute_exec
 
 - name: Set ExecStart stanza
   set_fact:
-    exec_start:
-      "{{ _self.exec }}"
+    exec_start: '{{ _self.exec }}'
   when: _self.absolute_exec
 
-- name:
-    Fill in system service template
+- name: Fill in system service template
   template:
-    src:
-      systemd.service.j2
-    dest:
-      "{{ systemd_service_dir }}/{{ _self.name }}.service"
-  when:
-    not _self.user_service
-  become:
-    yes
-  tags:
-    systemd-service
+    src: systemd.service.j2
+    dest: '{{ systemd_service_dir }}/{{ _self.name }}.service'
+  when: not _self.user_service
+  become: yes
+  tags: systemd-service
 
-- name:
-    Fill in user service template
+- name: Fill in user service template
   template:
-    src:
-      systemd.service.j2
-    dest:
-      "{{ user_service_dir }}/{{ _self.name }}.service"
-  when:
-    _self.user_service
-  tags:
-    systemd-service
+    src: systemd.service.j2
+    dest: '{{ user_service_dir }}/{{ _self.name }}.service'
+  when: _self.user_service
+  tags: systemd-service
 
 - name:
     Enable the service
   systemd:
     daemon-reload: yes
-    name: "{{ _self.name }}"
-    user: "{{ _self.user_service }}"
-    enabled: "{{ _self.enable }}"
-  become: "{{ not _self.user_service }}"
+    name: '{{ _self.name }}'
+    user: '{{ _self.user_service }}'
+    enabled: '{{ _self.enable }}'
+  become: '{{ not _self.user_service }}'
   when: not _self.instance
   tags:
     systemd-service
@@ -84,10 +64,10 @@
     Enable the service for instance
   systemd:
     daemon-reload: yes
-    name: "{{ _self.name }}{{ _self.instance }}"
-    user: "{{ _self.user_service }}"
+    name: '{{ _self.name }}{{ _self.instance }}'
+    user: '{{ _self.user_service }}'
     enabled: yes
-  become: "{{ not _self.user_service }}"
+  become: '{{ not _self.user_service }}'
   when: _self.instance
   tags:
     systemd-service
@@ -96,11 +76,12 @@
     Start the service
   systemd:
     daemon-reload: yes
-    name: "{{ _self.name }}"
-    user: "{{ _self.user_service }}"
-    state: started
+    name: '{{ _self.name }}'
+    user: '{{ _self.user_service }}'
+    state: restarted
     enabled: yes
-  become: "{{ not _self.user_service }}"
+  become: '{{ not _self.user_service }}'
   when: _self.start
   tags:
     systemd-service
+...
