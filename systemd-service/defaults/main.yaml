@@ -1,8 +1,8 @@
 ---
 _defaults:
-  absolute_exec: yes
   enable: yes
   instance: false
   start: yes
-  user_service: yes
   wanted_by: default
+  scope: user
+...

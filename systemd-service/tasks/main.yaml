@@ -4,7 +4,7 @@
   file:
     path: '{{ user_service_dir }}'
     state: directory
-  when: _self.user_service
+  when: _self.scope == 'user'
   tags: systemd-systemd-service
 
 # https://www.freedesktop.org/software/systemd/man/journald.conf.html#Options
@@ -19,25 +19,25 @@
 - name: Determine full path of the exec
   command: which {{ _self.exec.split() | first }}
   register: which_exec
-  when: not _self.absolute_exec
+  when: not _self.exec.startswith('/')
 
 - name: Build ExecStart stanza from executable path and arguments
   vars:
     args: '{{ _self.exec.split()[1:] }}'
   set_fact:
-    exec_start: '{{ which_exec.stdout }} {{ ' '.join(args) }}'
-  when: not _self.absolute_exec
+    exec_start: '{{ which_exec.stdout }} {{ " ".join(args) }}'
+  when: not _self.exec.startswith('/')
 
 - name: Set ExecStart stanza
   set_fact:
     exec_start: '{{ _self.exec }}'
-  when: _self.absolute_exec
+  when: _self.exec.startswith('/')
 
 - name: Fill in system service template
   template:
     src: systemd.service.j2
     dest: '{{ systemd_service_dir }}/{{ _self.name }}.service'
-  when: not _self.user_service
+  when: _self.scope != 'user'
   become: yes
   tags: systemd-service
 
@@ -45,7 +45,7 @@
   template:
     src: systemd.service.j2
     dest: '{{ user_service_dir }}/{{ _self.name }}.service'
-  when: _self.user_service
+  when: _self.scope == 'user'
   tags: systemd-service
 
 - name:
@@ -53,9 +53,9 @@
   systemd:
     daemon-reload: yes
     name: '{{ _self.name }}'
-    user: '{{ _self.user_service }}'
+    scope: '{{ _self.scope }}'
     enabled: '{{ _self.enable }}'
-  become: '{{ not _self.user_service }}'
+  become: '{{ _config.become }}'
   when: not _self.instance
   tags:
     systemd-service
@@ -65,9 +65,9 @@
   systemd:
     daemon-reload: yes
     name: '{{ _self.name }}{{ _self.instance }}'
-    user: '{{ _self.user_service }}'
+    scope: '{{ _self.scope }}'
     enabled: yes
-  become: '{{ not _self.user_service }}'
+  become: '{{ _config.become }}'
   when: _self.instance
   tags:
     systemd-service
@@ -77,10 +77,10 @@
   systemd:
     daemon-reload: yes
     name: '{{ _self.name }}'
-    user: '{{ _self.user_service }}'
+    scope: '{{ _self.scope }}'
     state: restarted
     enabled: yes
-  become: '{{ not _self.user_service }}'
+  become: '{{ _config.become }}'
   when: _self.start
   tags:
     systemd-service
