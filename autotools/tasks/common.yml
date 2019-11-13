@@ -11,7 +11,7 @@
     chdir: "{{ source.path }}/{{ _build.makefile_path }}"
   when:  _build.make_install
   become: yes
-  tags: install
+  tags: install, make_install
 
 - name:
     Run ldconfig
